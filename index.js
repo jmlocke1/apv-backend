@@ -5,6 +5,7 @@ import veterinarioRoutes from './routes/veterinarioRoutes.js';
 const { portApp } = config;
 
 const app = express();
+app.use(express.json());
 
 conectarDB();
 
