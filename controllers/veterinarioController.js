@@ -19,14 +19,20 @@ const registrar = async (req, res) => {
         console.log(error);
     }
     
-}
+};
 
 const perfil = (req, res) => {
     res.json({ msg: "Mostrando perfil"});
-}
+};
+
+const confirmar = (req, res) => {
+    console.log(req.params.token);
+    res.json({msg: 'Confirmando cuenta... usuario '+req.params.token});
+};
 
 
 export {
     registrar,
-    perfil
+    perfil,
+    confirmar
 }
