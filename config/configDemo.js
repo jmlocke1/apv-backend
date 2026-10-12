@@ -4,7 +4,8 @@ const config = {
     databaseHost: 'localhost',
     portDB: '27017',
     databaseName: 'apv',
-    portApp: '4000'
+    portApp: '4000',
+    JWT_Secret: 'palabrasupersecreta'
 }
 
 //export default config;
