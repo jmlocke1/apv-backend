@@ -65,7 +65,7 @@ const autenticar = async (req, res) => {
     }
 
     // Revisar el password
-    if( await usuario.comprobarPassword(password)) {        
+    if( await usuario.comprobarPassword(password)) {
         // Autenticar        
         res.json({ token: generarJWT(await addTokenToUser(usuario)) });
     } else {
@@ -74,11 +74,24 @@ const autenticar = async (req, res) => {
     }
 };
 
+const olvidePassword = (req, res) => {
 
+};
+
+const comprobarToken = (req, res) => {
+
+};
+
+const nuevoPassword = (req, res) => {
+
+};
 
 export {
     registrar,
     perfil,
     confirmar,
-    autenticar
+    autenticar,
+    olvidePassword,
+    comprobarToken,
+    nuevoPassword
 }
