@@ -9,10 +9,10 @@ const checkAuth = async (req, res, next) => {
         try {
             token = req.headers.authorization.split(' ')[1];
             const decoded = jwt.verify(token, JWT_Secret);
-            req.veterinario = await Veterinario.find({ token: decoded.token }).select(
-                "-password -token -confirmado"
+            req.veterinario = await Veterinario.findOne({ token: decoded.token }).select(
+                "-password -confirmado"
             );
-
+            
             return next();
         } catch (error) {
             const e = new Error("Token no válido");
