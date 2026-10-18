@@ -22,8 +22,32 @@ const obtenerPacientes = async (req, res) => {
     res.json(pacientes);
 }
 
+const obtenerPaciente = async (req, res) => {
+    if(!req.veterinario) return;
+    const { id } = req.params;
+    const paciente = await Paciente.findById(id);
+
+    
+    if(paciente.veterinario._id.toString() !== req.veterinario._id.toString()) {
+        return res.status(404).json({msg: "Acción no permitida"});
+    }
+    if(paciente) {
+        res.json(paciente);
+    }
+};
+
+const actualizarPaciente = async (req, res) => {
+    if(!req.veterinario) return;
+};
+
+const eliminarPaciente = async (req, res) => {
+    if(!req.veterinario) return;
+};
 
 export {
     agregarPaciente,
-    obtenerPacientes
+    obtenerPacientes,
+    obtenerPaciente,
+    actualizarPaciente,
+    eliminarPaciente
 }
