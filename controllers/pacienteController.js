@@ -1,5 +1,6 @@
 import Paciente from "../models/Paciente.js";
 
+const columns = ["nombre", "propietario", "email", "fecha_alta", "sintomas", "veterinario"];
 
 const agregarPaciente = async (req, res) => {
     if(!req.veterinario) return;
@@ -27,17 +28,44 @@ const obtenerPaciente = async (req, res) => {
     const { id } = req.params;
     const paciente = await Paciente.findById(id);
 
+    if(!paciente) {
+        return res.status(404).json({msg: 'No encontrado'});
+    }
     
     if(paciente.veterinario._id.toString() !== req.veterinario._id.toString()) {
         return res.status(404).json({msg: "Acción no permitida"});
     }
-    if(paciente) {
-        res.json(paciente);
-    }
+    
+    res.json(paciente);
 };
 
 const actualizarPaciente = async (req, res) => {
     if(!req.veterinario) return;
+    if(!req.veterinario) return;
+    const { id } = req.params;
+    const paciente = await Paciente.findById(id);
+
+    if(!paciente) {
+        return res.status(404).json({msg: 'No encontrado'});
+    }
+    
+    if(paciente.veterinario._id.toString() !== req.veterinario._id.toString()) {
+        return res.status(404).json({msg: "Acción no permitida"});
+    }
+    
+    // Actualizar Paciente
+    columns.forEach(key=>{
+        paciente[key] = req.body[key] ?? paciente[key];
+    })
+    try {
+        const pacienteActualizado = await paciente.save();
+        console.log(pacienteActualizado.updatedAt.toLocaleString("es-ES", {
+            timezone: "Europe/Madrid"
+        }));
+        res.json(pacienteActualizado);
+    } catch (error) {
+        res.status(404).json({msg: error.message});
+    }
 };
 
 const eliminarPaciente = async (req, res) => {
