@@ -6,6 +6,6 @@ const router = express.Router();
 
 router.route('/')
     .post(checkAuth, agregarPaciente)
-    .get(obtenerPacientes)
+    .get(checkAuth, obtenerPacientes)
 
 export default router;

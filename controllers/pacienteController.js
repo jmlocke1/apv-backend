@@ -2,6 +2,7 @@ import Paciente from "../models/Paciente.js";
 
 
 const agregarPaciente = async (req, res) => {
+    if(!req.veterinario) return;
     const paciente = new Paciente(req.body);
     paciente.veterinario = req.veterinario._id
     try {
@@ -12,8 +13,13 @@ const agregarPaciente = async (req, res) => {
     }
 }
 
-const obtenerPacientes = (req, res) => {
+const obtenerPacientes = async (req, res) => {
+    if(!req.veterinario) return;
+    const pacientes = await Paciente.find()
+        .where("veterinario")
+        .equals(req.veterinario);
 
+    res.json(pacientes);
 }
 
 
