@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Paciente from "../models/Paciente.js";
 
 const columns = ["nombre", "propietario", "email", "fecha_alta", "sintomas", "veterinario"];
@@ -26,6 +27,10 @@ const obtenerPacientes = async (req, res) => {
 const obtenerPaciente = async (req, res) => {
     if(!req.veterinario) return;
     const { id } = req.params;
+    if(!mongoose.Types.ObjectId.isValid(id)) {
+        const error = new Error("Id no válido");
+        return res.status(403).json({msg: error.message});
+    }
     const paciente = await Paciente.findById(id);
 
     if(!paciente) {
@@ -41,8 +46,11 @@ const obtenerPaciente = async (req, res) => {
 
 const actualizarPaciente = async (req, res) => {
     if(!req.veterinario) return;
-    if(!req.veterinario) return;
     const { id } = req.params;
+    if(!mongoose.Types.ObjectId.isValid(id)) {
+        const error = new Error("Id no válido");
+        return res.status(403).json({msg: error.message});
+    }
     const paciente = await Paciente.findById(id);
 
     if(!paciente) {
@@ -70,6 +78,28 @@ const actualizarPaciente = async (req, res) => {
 
 const eliminarPaciente = async (req, res) => {
     if(!req.veterinario) return;
+    const { id } = req.params;
+    if(!mongoose.Types.ObjectId.isValid(id)) {
+        const error = new Error("Id no válido");
+        return res.status(403).json({msg: error.message});
+    }
+
+    const paciente = await Paciente.findById(id);
+
+    if(!paciente) {
+        return res.status(404).json({msg: 'No encontrado'});
+    }
+    
+    if(paciente.veterinario._id.toString() !== req.veterinario._id.toString()) {
+        return res.status(404).json({msg: "Acción no permitida"});
+    }
+
+    try {
+        await paciente.deleteOne();
+        res.json({msg: "Paciente Eliminado"});
+    } catch (error) {
+        return res.status(404).json({msg: error.message});
+    }
 };
 
 export {
