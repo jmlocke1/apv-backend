@@ -5,9 +5,18 @@ const columns = ["nombre", "propietario", "email", "fecha_alta", "sintomas", "ve
 
 const agregarPaciente = async (req, res) => {
     if(!req.veterinario) return;
-        
+    
     try {
-        const paciente = new Paciente(req.body);
+        let paciente = await Paciente.findOne()
+            .where("nombre")
+            .equals(req.body.nombre)
+            .where("propietario")
+            .equals(req.body.propietario);
+        
+        if(paciente) {
+            return res.status(409).json({msg: "El paciente ya existe en la base de datos"});
+        }
+        paciente = new Paciente(req.body);
         paciente.veterinario = req.veterinario._id
         const pacienteGuardado = await paciente.save();
         res.json(pacienteGuardado);
