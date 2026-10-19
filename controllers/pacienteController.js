@@ -75,9 +75,7 @@ const actualizarPaciente = async (req, res) => {
             paciente[key] = req.body[key] ?? paciente[key];
         })
         const pacienteActualizado = await paciente.save();
-        console.log(pacienteActualizado.updatedAt.toLocaleString("es-ES", {
-            timezone: "Europe/Madrid"
-        }));
+        
         res.json(pacienteActualizado);
     } catch (error) {
         res.status(404).json({msg: error.message});
