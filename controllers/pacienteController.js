@@ -5,13 +5,14 @@ const columns = ["nombre", "propietario", "email", "fecha_alta", "sintomas", "ve
 
 const agregarPaciente = async (req, res) => {
     if(!req.veterinario) return;
-    const paciente = new Paciente(req.body);
-    paciente.veterinario = req.veterinario._id
+        
     try {
+        const paciente = new Paciente(req.body);
+        paciente.veterinario = req.veterinario._id
         const pacienteGuardado = await paciente.save();
         res.json(pacienteGuardado);
     } catch (error) {
-        console.log(error);
+        res.status(404).json({msg: error.message});
     }
 }
 
@@ -47,25 +48,23 @@ const obtenerPaciente = async (req, res) => {
 const actualizarPaciente = async (req, res) => {
     if(!req.veterinario) return;
     const { id } = req.params;
-    if(!mongoose.Types.ObjectId.isValid(id)) {
-        const error = new Error("Id no válido");
-        return res.status(403).json({msg: error.message});
-    }
-    const paciente = await Paciente.findById(id);
-
-    if(!paciente) {
-        return res.status(404).json({msg: 'No encontrado'});
-    }
     
-    if(paciente.veterinario._id.toString() !== req.veterinario._id.toString()) {
-        return res.status(404).json({msg: "Acción no permitida"});
-    }
-    
-    // Actualizar Paciente
-    columns.forEach(key=>{
-        paciente[key] = req.body[key] ?? paciente[key];
-    })
+        
     try {
+        const paciente = await Paciente.findById(id);
+
+        if(!paciente) {
+            return res.status(404).json({msg: 'No encontrado'});
+        }
+        
+        if(paciente.veterinario._id.toString() !== req.veterinario._id.toString()) {
+            return res.status(404).json({msg: "Acción no permitida"});
+        }
+        
+        // Actualizar Paciente
+        columns.forEach(key=>{
+            paciente[key] = req.body[key] ?? paciente[key];
+        })
         const pacienteActualizado = await paciente.save();
         console.log(pacienteActualizado.updatedAt.toLocaleString("es-ES", {
             timezone: "Europe/Madrid"
@@ -79,22 +78,19 @@ const actualizarPaciente = async (req, res) => {
 const eliminarPaciente = async (req, res) => {
     if(!req.veterinario) return;
     const { id } = req.params;
-    if(!mongoose.Types.ObjectId.isValid(id)) {
-        const error = new Error("Id no válido");
-        return res.status(403).json({msg: error.message});
-    }
-
-    const paciente = await Paciente.findById(id);
-
-    if(!paciente) {
-        return res.status(404).json({msg: 'No encontrado'});
-    }
     
-    if(paciente.veterinario._id.toString() !== req.veterinario._id.toString()) {
-        return res.status(404).json({msg: "Acción no permitida"});
-    }
-
+    
     try {
+        const paciente = await Paciente.findById(id);
+
+        if(!paciente) {
+            return res.status(404).json({msg: 'No encontrado'});
+        }
+        
+        if(paciente.veterinario._id.toString() !== req.veterinario._id.toString()) {
+            return res.status(404).json({msg: "Acción no permitida"});
+        }
+
         await paciente.deleteOne();
         res.json({msg: "Paciente Eliminado"});
     } catch (error) {
