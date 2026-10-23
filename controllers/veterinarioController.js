@@ -2,9 +2,23 @@ import Veterinario from "../models/Veterinario.js";
 import generarJWT from "../helpers/generarJWT.js";
 import { addTokenToUser } from "../helpers/generarId.js";
 import { generarId } from "../helpers/generarId.js";
+import { quitaBlancosArray } from "../helpers/functionsHelpers.js";
 
 const registrar = async (req, res) => {
-    const { nombre, email, password } = req.body;
+    const { nombre, email, password, repetirPassword } = quitaBlancosArray(req.body);
+
+    // Validar los datos
+    if( [ nombre, email, password, repetirPassword ].includes('')) {
+        return res.status(400).json({msg: 'Hay campos vacíos'});
+    }
+
+    if(password !== repetirPassword) {
+        return res.status(400).json({msg: 'Los Password no son iguales'});
+    }
+
+    if(password.length < 6) {
+        return res.status(400).json({msg: 'El Password es muy corto. Debe ser, al menos de 6 caracteres'});
+    }
 
     // Prevenir usuarios duplicados
     const existeUsuario = await Veterinario.findOne({email});
