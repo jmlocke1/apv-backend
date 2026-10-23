@@ -5,10 +5,10 @@ import { generarId } from "../helpers/generarId.js";
 import { quitaBlancosArray } from "../helpers/functionsHelpers.js";
 
 const registrar = async (req, res) => {
-    const { nombre, email, password, repetirPassword } = quitaBlancosArray(req.body);
+    const { nombre, email, password, repetirPassword } = req.body;
 
     // Validar los datos
-    if( [ nombre, email, password, repetirPassword ].includes('')) {
+    if( quitaBlancosArray([ nombre, email, password, repetirPassword ]).includes('')) {
         return res.status(400).json({msg: 'Hay campos vacíos'});
     }
 
@@ -33,7 +33,7 @@ const registrar = async (req, res) => {
         const veterinarioGuardado = await veterinario.save();
         res.json(veterinarioGuardado);
     } catch (error) {
-        console.log(error);
+        return res.status(400).json({msg: error});
     }
     
 };
