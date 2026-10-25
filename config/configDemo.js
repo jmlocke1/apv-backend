@@ -6,7 +6,11 @@ const config = {
     databaseName: 'apv',
     portApp: '4000',
     JWT_Secret: 'palabrasupersecreta',
-    allowedDomains: ["http://localhost:5173"]
+    allowedDomains: ["http://localhost:5173"],
+    mailHost: "sandbox.smtp.mailtrap.io",
+    mailPort: 2525,
+    mailUser: "mailUser",
+    mailPassword: "mailPassword"
 }
 
 //export default config;
