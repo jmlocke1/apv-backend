@@ -17,10 +17,10 @@ const emailRegistro = async (datos) => {
     const info = await transport.sendMail({
         from: "APV - Administrador de Pacientes de Veterinaria",
         to: email,
-        subject: 'Comprueba tu cuente en APV',
-        text: 'Comrpueba tu cuenta en APV',
+        subject: 'Comprueba tu cuenta en APV',
+        text: 'Comprueba tu cuenta en APV',
         html: `<p>Hola: ${nombre}, comprueba tu cuenta en APV</p>
-            <p>Tu cuenta ya está lista, solo debes confirmarla en el siguiente enlace: <a href="${frontDomain}/confirmar/${token}">Comprobar Cuenta</a></p>
+            <p>Tu cuenta ya está lista, solo debes confirmarla en el siguiente enlace: <a href="${frontDomain}/confirmar/${token}">Confirmar Cuenta</a></p>
             <p>Si tú no creaste esta cuenta, puedes ignorar este mensaje</p>
         `
     });
