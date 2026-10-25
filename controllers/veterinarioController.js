@@ -3,6 +3,7 @@ import generarJWT from "../helpers/generarJWT.js";
 import { addTokenToUser } from "../helpers/generarId.js";
 import { generarId } from "../helpers/generarId.js";
 import { quitaBlancosArray } from "../helpers/functionsHelpers.js";
+import emailRegistro from "../helpers/emailRegistro.js";
 
 const registrar = async (req, res) => {
     const { nombre, email, password, repetirPassword } = req.body;
@@ -31,6 +32,14 @@ const registrar = async (req, res) => {
         // Guardar un nuevo veterinario
         const veterinario = new Veterinario(req.body);
         const veterinarioGuardado = await veterinario.save();
+
+        // Enviar el email de confirmación
+        emailRegistro({
+            email,
+            nombre,
+            token: veterinarioGuardado.token
+        });
+
         res.json(veterinarioGuardado);
     } catch (error) {
         return res.status(400).json({msg: error});
