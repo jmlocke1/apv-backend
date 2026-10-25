@@ -57,7 +57,7 @@ const confirmar = async (req, res) => {
 
     const usuarioConfirmar = await Veterinario.findOne({token});
     
-    if(!usuarioConfirmar) {
+    if(!usuarioConfirmar || usuarioConfirmar.confirmado) {
         const error = new Error('Token no encontrado');
         return res.status(404).json({msg: error.message})
     }
