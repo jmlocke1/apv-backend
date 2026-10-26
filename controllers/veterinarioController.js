@@ -139,13 +139,23 @@ const comprobarToken = async (req, res) => {
 
 const nuevoPassword = async (req, res) => {
     const { token } = req.params;
-    const { password } = req.body;
+    const { password, repetirPassword } = req.body;
+
+     if(password.length < 6 || repetirPassword.length < 6)  {
+        const error = new Error("El Password debe ser mínimo de 6 caracteres");
+        return res.status(400).json({msg: error.message});
+     }
+    if(password !== repetirPassword) {
+        const error = new Error("Los Password no son iguales");
+        return res.status(400).json({msg: error.message});
+    }
 
     const veterinario = await Veterinario.findOne({ token });
     if(!veterinario) {
         const error = new Error("Hubo un error");
         return res.status(400).json({ msg: error.message });
     }
+    
 
     try {
         veterinario.token = null;
