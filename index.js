@@ -24,6 +24,8 @@ const corsOptions = {
 }
 
 app.use(cors(corsOptions));
+// Para usar Postman, comentar la anterior y descomentar la siguiente, para permitir todos los orígenes
+// app.use(cors({ origin: '*' }));
 
 app.use("/api/veterinarios", veterinarioRoutes);
 app.use("/api/pacientes", pacienteRoutes);
