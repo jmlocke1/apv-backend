@@ -3,7 +3,6 @@ const generarId = () => {
 };
 
 const addTokenToUser = async (usuario) => {
-    // const token = generarId();
     try {
         usuario.token = generarId();
         await usuario.save();
@@ -13,7 +12,17 @@ const addTokenToUser = async (usuario) => {
     return usuario.token;
 }
 
+const deleteUserToken = async (usuario) => {
+    try {
+        usuario.token = null;
+        await usuario.save();
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export {
     generarId,
-    addTokenToUser
+    addTokenToUser,
+    deleteUserToken
 }

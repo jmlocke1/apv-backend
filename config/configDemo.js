@@ -7,6 +7,8 @@ const config = {
     databaseName: 'apv',
     portApp: '4000',
     JWT_Secret: 'palabrasupersecreta',
+    JWT_MAX_TIME_EXPIRED: 300, // 300 segundos, o cinco minutos, desde que expiró
+    JWT_EXPIRES_IN: '30d',
     allowedDomains: ["http://localhost:5173"],
     mailHost: "sandbox.smtp.mailtrap.io",
     mailPort: 2525,

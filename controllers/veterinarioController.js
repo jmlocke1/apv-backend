@@ -1,7 +1,7 @@
 import Veterinario from "../models/Veterinario.js";
 import generarJWT from "../helpers/generarJWT.js";
 import { addTokenToUser } from "../helpers/generarId.js";
-import { generarId } from "../helpers/generarId.js";
+import { generarId, deleteUserToken } from "../helpers/generarId.js";
 import { quitaBlancosArray } from "../helpers/functionsHelpers.js";
 import emailRegistro from "../helpers/emailRegistro.js";
 import emailOlvidePassword from "../helpers/emailOlvidePassword.js";
@@ -52,6 +52,11 @@ const perfil = (req, res) => {
     if(!req.veterinario) return;
     res.json( req.veterinario );
 };
+
+const cerrarSesion = (req, res) => {
+    if(!req.veterinario) return;
+    res.json( deleteUserToken(req.veterinario) );
+}
 
 const confirmar = async (req, res) => {
     const { token } = req.params;
@@ -175,6 +180,7 @@ const nuevoPassword = async (req, res) => {
 export {
     registrar,
     perfil,
+    cerrarSesion,
     confirmar,
     autenticar,
     olvidePassword,
