@@ -1,5 +1,15 @@
 import express from "express";
-import { registrar, perfil, cerrarSesion, confirmar, autenticar, olvidePassword, comprobarToken, nuevoPassword } from "../controllers/veterinarioController.js";
+import { 
+    registrar, 
+    perfil, 
+    cerrarSesion, 
+    confirmar, 
+    autenticar, 
+    olvidePassword, 
+    comprobarToken, 
+    nuevoPassword,
+    actualizarPerfil
+} from "../controllers/veterinarioController.js";
 import checkAuth from "../middleware/authMiddleware.js";
 
 const router = express.Router();
@@ -17,6 +27,7 @@ router.route('/olvide-password/:token').get(comprobarToken).post(nuevoPassword);
 
 // Área Privada
 router.get('/perfil', checkAuth, perfil);
+router.put('/perfil/:id', checkAuth, actualizarPerfil);
 router.get('/cerrar-sesion', checkAuth, cerrarSesion);
 
 
