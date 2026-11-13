@@ -180,8 +180,24 @@ const nuevoPassword = async (req, res) => {
 };
 
 const actualizarPerfil = async (req, res) => {
-    console.log(req.body);
-    console.log(req.params);
+    const veterinario = await Veterinario.findById(req.params.id);
+    console.log(veterinario);
+    if(!veterinario) {
+        const error = new Error("Hubo un error");
+        return res.status(400).json({ msg: error.message });
+    }
+
+    try {
+        veterinario.nombre = req.body.nombre;
+        veterinario.email = req.body.email;
+        veterinario.web = req.body.web;
+        veterinario.telefono = req.body.telefono;
+
+        const veterinarioActualizado = veterinario.save();
+        res.json(veterinarioActualizado);
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 export {
