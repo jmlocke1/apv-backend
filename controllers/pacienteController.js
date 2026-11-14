@@ -39,7 +39,7 @@ const obtenerPaciente = async (req, res) => {
     const { id } = req.params;
     if(!mongoose.Types.ObjectId.isValid(id)) {
         const error = new Error("Id no válido");
-        return res.status(403).json({msg: error.message});
+        return res.status(400).json({msg: error.message});
     }
     const paciente = await Paciente.findById(id);
 

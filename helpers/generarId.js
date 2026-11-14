@@ -14,8 +14,10 @@ const addTokenToUser = async (usuario) => {
 
 const deleteUserToken = async (usuario) => {
     try {
-        usuario.token = null;
-        await usuario.save();
+        if(usuario.token) {
+            usuario.token = null;
+            await usuario.save();
+        }
     } catch (error) {
         console.log(error);
     }
