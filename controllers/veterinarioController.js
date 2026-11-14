@@ -1,5 +1,5 @@
 import Veterinario from "../models/Veterinario.js";
-import {generarJWT, generarRefreshToken} from "../helpers/generarJWT.js";
+import { generarJWT } from "../helpers/generarJWT.js";
 import { addTokenToUser, generarId, deleteUserToken } from "../helpers/generarId.js";
 import { quitaBlancosArray } from "../helpers/functionsHelpers.js";
 import emailRegistro from "../helpers/emailRegistro.js";
