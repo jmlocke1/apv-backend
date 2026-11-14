@@ -7,7 +7,8 @@ const { JWT_Secret, JWT_MAX_TIME_EXPIRED, JWT_EXPIRES_IN } = config;
 
 const checkAuth = async (req, res, next) => {
     let token;
-    if(!req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    
+    if(!req.headers.authorization || !req.headers.authorization?.startsWith('Bearer')) {
         res.set('WWW-Authenticate', 'Bearer error="invalid_request"');
         return res.status(401).json({
             codigo: 'TOKEN_NO_ENVIADO',
