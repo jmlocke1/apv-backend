@@ -31,6 +31,10 @@ const veterinarioSchema = mongoose.Schema({
         type: String,
         default: () => generarId()
     },
+    refreshToken: {
+        type: String,
+        default: null
+    },
     confirmado: {
         type: Boolean,
         default: false

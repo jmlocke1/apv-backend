@@ -4,7 +4,8 @@ import {
     perfil, 
     cerrarSesion, 
     confirmar, 
-    autenticar, 
+    autenticar,
+    refrescarToken, 
     olvidePassword, 
     comprobarToken, 
     nuevoPassword,
@@ -23,6 +24,7 @@ router.post('/olvide-password', olvidePassword);
 // router.get('/olvide-password/:token', comprobarToken);
 // router.post('/olvide-password/:token', nuevoPassword);
 router.route('/olvide-password/:token').get(comprobarToken).post(nuevoPassword);
+router.post('/refresh-token', refrescarToken);
 
 
 // Área Privada

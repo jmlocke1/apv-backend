@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import config from "../config/config.js";
 import Veterinario from "../models/Veterinario.js";
-import generarJWT from "../helpers/generarJWT.js";
+import {generarJWT} from "../helpers/generarJWT.js";
 import { deleteUserToken } from "../helpers/generarId.js";
 const { JWT_Secret, JWT_MAX_TIME_EXPIRED, JWT_EXPIRES_IN } = config;
 
