@@ -17,5 +17,6 @@ const config = {
     mailUser: "mailUser",
     mailPassword: "mailPassword"
 }
-
+// Puedes crear una palabra supersecreta con el siguiente comando:
+// node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
 //export default config;
