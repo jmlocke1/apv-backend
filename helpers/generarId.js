@@ -8,6 +8,7 @@ const addTokenToUser = async (usuario) => {
     const token = generarId();
     const accessToken = generarJWT(token);
     const refreshToken = generarRefreshToken(token);
+    
     try {
         usuario.token = token;
         usuario.refreshToken = refreshToken;
@@ -22,6 +23,7 @@ const deleteUserToken = async (usuario) => {
     try {
         if(usuario.token) {
             usuario.token = null;
+            usuario.refreshToken = null;
             await usuario.save();
         }
     } catch (error) {

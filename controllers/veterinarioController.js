@@ -1,3 +1,4 @@
+import jwt from "jsonwebtoken";
 import Veterinario from "../models/Veterinario.js";
 import { generarJWT } from "../helpers/generarJWT.js";
 import { addTokenToUser, generarId, deleteUserToken } from "../helpers/generarId.js";
@@ -82,7 +83,7 @@ const autenticar = async (req, res) => {
 
     // Comprobar si el usuario existe
     const usuario = await Veterinario.findOne({email});
-
+    
     if(!usuario) {
         const error = new Error("El Usuario no existe todavía");
         return res.status(404).json({ msg : error.message });
@@ -97,7 +98,8 @@ const autenticar = async (req, res) => {
     // Revisar el password
     if( await usuario.comprobarPassword(password)) {
         // Autenticar
-        const { accessToken, refreshToken } = addTokenToUser(usuario);
+        const { accessToken, refreshToken } = await addTokenToUser(usuario);
+        
         res.json({
             _id: usuario._id,
             nombre: usuario.nombre,
@@ -117,6 +119,7 @@ const autenticar = async (req, res) => {
 
 const refrescarToken = async (req, res) => {
     const { refreshToken } = req.body;
+    
     if(!refreshToken) {
         return res.status(401).json({
             codigo: 'REFRESH_NO_ENVIADO',
@@ -127,9 +130,8 @@ const refrescarToken = async (req, res) => {
     try {
         // 1. Verificamos que la firma y fecha del refreshToken sean válidas
         const decoded = jwt.verify(refreshToken, config.JWT_REFRESH_SECRET);
-
         // 2. Comprobamos qu coincida con el que tiene guardado el veterinario
-        const veterinario = Veterinario.findOne({token: decoded.token});
+        const veterinario = await Veterinario.findOne({token: decoded.token});
         if(!veterinario || veterinario.refreshToken !== refreshToken) {
             return res.status(401).json({
                 codigo: 'REFRESH_INVALIDO',
@@ -138,13 +140,21 @@ const refrescarToken = async (req, res) => {
         }
 
         // 3. Generamos un nuevo Access Token
-        const nuevoAccessToken = generarJWT({token: veterinario.token});
-
+        const nuevoAccessToken = generarJWT( veterinario.token );
         res.json({ token: nuevoAccessToken });
     } catch (error) {
+        console.error('Error en refrescarToken:', error); // Te mostrará en terminal si falla otra cosa
+
+        if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({
+                codigo: 'REFRESH_EXPIRADO',
+                msg: 'Tu sesión ha expirado por completo. Inicia sesión.'
+            });
+        }
+
         return res.status(401).json({
-            codigo: 'REFRESH_EXPIRADO',
-            msg: 'Tu sesión ha expirado por completo. Inicia sesión.'
+            codigo: 'REFRESH_INVALIDO',
+            msg: 'El refresh token no es válido.'
         });
     }
 }
