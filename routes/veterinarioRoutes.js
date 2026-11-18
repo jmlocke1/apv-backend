@@ -9,7 +9,8 @@ import {
     olvidePassword, 
     comprobarToken, 
     nuevoPassword,
-    actualizarPerfil
+    actualizarPerfil,
+    actualizarPassword
 } from "../controllers/veterinarioController.js";
 import checkAuth from "../middleware/authMiddleware.js";
 
@@ -31,6 +32,7 @@ router.post('/refresh-token', refrescarToken);
 router.get('/perfil', checkAuth, perfil);
 router.put('/perfil/:id', checkAuth, actualizarPerfil);
 router.get('/cerrar-sesion', checkAuth, cerrarSesion);
+router.put('/actualizar-password', checkAuth , actualizarPassword);
 
 
 export default router;
